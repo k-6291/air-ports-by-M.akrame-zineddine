@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>رحلة عبر الزمن - تطور المطارات</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #1e40af;
+      --primary-light: #3b82f6;
+      --secondary: #f97316;
+      --accent: #8b5cf6;
+      --dark: #0f172a;
+      --light: #f8fafc;
+      --gray: #64748b;
+      --success: #10b981;
+      --danger: #ef4444;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background: #f9fbfd;
+      color: var(--dark);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 5%;
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 1.3rem;
+    }
+    .logo i {
+      font-size: 1.5rem;
+    }
+    .back-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 30px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .back-btn:hover {
+      background: var(--primary-light);
+      transform: translateY(-3px);
+    }
+    .hero-timeline {
+      padding: 10rem 5% 6rem;
+      background: linear-gradient(135deg, #0f172a, #1e3a8a);
+      color: white;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-timeline h1 {
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      animation: fadeInUp 1s ease;
+    }
+    .hero-timeline p {
+      font-size: 1.3rem;
+      max-width: 700px;
+      margin: 0 auto 3rem;
+      color: rgba(255,255,255,0.85);
+      animation: fadeInUp 1s ease 0.2s both;
+    }
+    .airplane-pass {
+      position: absolute;
+      top: 30%;
+      right: -150px;
+      width: 100px;
+      height: 40px;
+      animation: pass 15s linear infinite;
+      z-index: 0;
+    }
+    .airplane-pass svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .timeline {
+      padding: 6rem 5%;
+      background: white;
+      position: relative;
+    }
+    .section-title {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 4rem;
+      color: var(--primary);
+      position: relative;
+    }
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      right: 50%;
+      transform: translateX(50%);
+      width: 100px;
+      height: 5px;
+      background: var(--secondary);
+      border-radius: 3px;
+    }
+    .timeline-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .timeline-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 50%;
+      width: 4px;
+      background: var(--primary-light);
+      transform: translateX(50%);
+      z-index: 0;
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 6rem;
+      width: calc(50% - 40px);
+      background: var(--light);
+      border-radius: 20px;
+      padding: 2.5rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      z-index: 1;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: slideIn 0.8s forwards;
+    }
+    .timeline-item:nth-child(odd) {
+      right: 0;
+      align-self: flex-end;
+    }
+    .timeline-item:nth-child(even) {
+      right: calc(50% + 80px);
+      align-self: flex-start;
+    }
+    .timeline-item.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .timeline-year {
+      position: absolute;
+      top: 0;
+      transform: translate(50%, -50%);
+      background: var(--primary);
+      color: white;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.2rem;
+      box-shadow: 0 5px 15px rgba(30, 64, 175, 0.5);
+    }
+    .timeline-item:nth-child(odd) .timeline-year {
+      left: -80px;
+    }
+    .timeline-item:nth-child(even) .timeline-year {
+      right: -80px;
+    }
+    .timeline-content h3 {
+      color: var(--primary);
+      margin-bottom: 1rem;
+      font-size: 1.6rem;
+    }
+    .timeline-content p {
+      color: var(--gray);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+    .timeline-img {
+      width: 100%;
+      height: 200px;
+      background-size: cover;
+      background-position: center;
+      border-radius: 15px;
+      margin-top: 1rem;
+    }
+
+    .future {
+      padding: 8rem 5%;
+      background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+      text-align: center;
+      position: relative;
+    }
+    .future-content {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .future h2 {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 2rem;
+    }
+    .future p {
+      font-size: 1.4rem;
+      color: var(--gray);
+      margin-bottom: 3rem;
+    }
+    .future-features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      margin-top: 4rem;
+    }
+    .feature-card {
+      background: white;
+      border-radius: 20px;
+      padding: 2.5rem 1.5rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      transition: all 0.4s ease;
+    }
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+    .feature-card i {
+      font-size: 3rem;
+      color: var(--primary);
+      margin-bottom: 1.5rem;
+    }
+    .feature-card h3 {
+      font-size: 1.4rem;
+      color: var(--dark);
+      margin-bottom: 1rem;
+    }
+    .feature-card p {
+      color: var(--gray);
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pass {
+      0% { transform: translateX(-150px) translateY(0); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateX(calc(100vw + 150px)) translateY(-20px); opacity: 0; }
+    }
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      .timeline-container::before { right: 30px; }
+      .timeline-item:nth-child(odd),
+      .timeline-item:nth-child(even) {
+        right: 0;
+        width: calc(100% - 80px);
+      }
+      .timeline-item:nth-child(odd) .timeline-year,
+      .timeline-item:nth-child(even) .timeline-year {
+        left: -50px;
+        right: auto;
+      }
+      .hero-timeline h1 { font-size: 2.2rem; }
+      .hero-timeline p { font-size: 1.1rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <i class="fas fa-plane-departure"></i>
+      <span>رحلة عبر الزمن</span>
+    </div>
+    <a href="index.html" class="back-btn">
+      <i class="fas fa-arrow-right"></i>
+      العودة
+    </a>
+  </header>
+
+  <section class="hero-timeline">
+    <svg class="airplane-pass" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 40 L40 30 L60 35 L100 25 L130 40 L100 55 L60 45 L40 50 Z" fill="#ffffff" stroke="#3b82f6" stroke-width="2"/>
+      <path d="M30 25 L50 20 L55 30 L35 35 Z" fill="#3b82f6"/>
+      <path d="M110 20 L130 15 L135 25 L115 30 Z" fill="#3b82f6"/>
+    </svg>
+    <h1>رحلة عبر زمن المطارات</h1>
+    <p>من مدرجات بسيطة إلى مدن طيران ذكية، اكتشف كيف تطورت المطارات عبر العقود لتُصبح معالم عصرية تخدم الملايين.</p>
+  </section>
+
+  <section class="timeline">
+    <h2 class="section-title">مطارات عبر العصور</h2>
+    <div class="timeline-container">
+      <div class="timeline-item">
+        <div class="timeline-year">1920</div>
+        <div class="timeline-content">
+          <h3>البدايات البسيطة</h3>
+          <p>كانت المطارات عبارة عن مدرجات عشبية أو ترابية، مع مبانٍ صغيرة للإشراف على الإقلاع والهبوط. كانت تجربة السفر مغامرة حقيقية.</p>
+          <div class="timeline-img" style="background: url('https://images.unsplash.com/photo-1558551470-6d1d124e8430?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">1950</div>
+        <div class="timeline-content">
+          <h3>عصر الطائرات النفاثة</h3>
+          <p>بدأ الازدهار مع دخول الطائرات النفاثة، مما احتاج إلى مدارس أطول ومرافق أكثر تطوراً. ظهرت أول مطارات حديثة.</p>
+          <div class="timeline-img" style="background: url('https://images.unsplash.com/photo-1531259683007-0d418e398470?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">1980</div>
+        <div class="timeline-content">
+          <h3>الرقمنة والكفاءة</h3>
+          <p>دخلت الأنظمة الرقمية والشاشات، مما ساهم في تحسين كفاءة العمليات. بدأت المطارات تتحول إلى مراكز تجارية.</p>
+          <div class="timeline-img" style="background: url('https://images.unsplash.com/photo-1583394838336-acd977736f90?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2010</div>
+        <div class="timeline-content">
+          <h3>الابتكار والتصميم</h3>
+          <p>بدأت المطارات تُبنى كمعالم معمارية مذهلة، مثل شانغي والدوحة، مع مساحات خضراء، شلالات، ومسارات مخصصة للترفيه.</p>
+          <div class="timeline-img" style="background: url('https://images.unsplash.com/photo-1588345926547-85bb2938a85c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-year">2025</div>
+        <div class="timeline-content">
+          <h3>مستقبل المطارات</h3>
+          <p>مطارات ذكية تعتمد على الطاقة المتجددة، والذكاء الاصطناعي، والنقل الذاتي. تُعد وجهات سياحية بحد ذاتها.</p>
+          <div class="timeline-img" style="background: url('https://images.unsplash.com/photo-1633287387306-f08b4b3671c6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="future">
+    <div class="future-content">
+      <h2>ما الذي ينتظرنا؟</h2>
+      <p>المطارات في المستقبل لن تكون فقط أماكن للسفر، بل وجهات متكاملة للترفيه، العمل، والراحة. نتطلع إلى تجربة أكثر استدامة وذكاءً.</p>
+      <div class="future-features">
+        <div class="feature-card">
+          <i class="fas fa-solar-panel"></i>
+          <h3>طاقة نظيفة</h3>
+          <p>اعتماد كامل على الطاقة الشمسية وطاقة الرياح لتقليل البصمة الكربونية.</p>
+        </div>
+        <div class="feature-card">
+          <i class="fas fa-robot"></i>
+          <h3>روبوتات ذكية</h3>
+          <p>روبوتات تقدم خدمات مخصصة، من حمل الأمتعة إلى التوجيه داخل المطار.</p>
+        </div>
+        <div class="feature-card">
+          <i class="fas fa-car-side"></i>
+          <h3>نقل ذاتي</h3>
+          <p>عربات كهربائية تنقل المسافرين داخل المطار دون تدخل بشري.</p>
+        </div>
+        <div class="feature-card">
+          <i class="fas fa-leaf"></i>
+          <h3>تصميم أخضر</h3>
+          <p>مطارات مزروعة بالأشجار والمياه، تحسن جودة الهواء وتوفر بيئة مريحة.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // عرض العناصر عند التمرير
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.timeline-item').forEach(item => {
+      observer.observe(item);
+    });
+  </script>
+</body>
+</html>
